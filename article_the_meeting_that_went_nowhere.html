@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Meeting That Went Great (And Then Nothing) — Simi Rebello</title>
+<meta name="description" content="I've had this happen more times than I'd like to admit. A first meeting goes well. Really well. And then — nothing. Here's what I finally understood. By Simi Rebello.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --indigo-deep:   #12112a;
+  --indigo-dark:   #1a1836;
+  --indigo-mid:    #252350;
+  --indigo-bright: #5b58c2;
+  --indigo-soft:   #8b89d6;
+  --indigo-mist:   #c8c7e8;
+  --indigo-fog:    #eeedf8;
+
+  --sand-warm:  #c9aa71;
+  --sand-light: #e8d8b8;
+  --sand-pale:  #f0ebe0;
+  --sand-faint: #f7f4ee;
+
+  --page-bg:   #f0ebe0;
+  --white:     #ffffff;
+  --text-body: #1e1d3a;
+  --accent:    #5b58c2;
+
+  /* keep old names mapped so existing refs don't break */
+  --bark:    #12112a;
+  --bark2:   #1a1836;
+  --bark3:   #252350;
+  --cream:   #f0ebe0;
+  --cream2:  #e8e5d8;
+  --cream3:  #d0ccbf;
+  --terra:   #5b58c2;
+  --terra2:  #4a47a8;
+  --terra-lt:#e0dff5;
+  --sand:    #6b68b8;
+  --sand2:   #8b89d6;
+  --gold:    #c9aa71;
+
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --body:   'Lora', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #f0ebe0; color: #1e1d3a;
+  font-family: var(--body); font-size: 16px; line-height: 1.85; overflow-x: hidden;
+}
+
+.grain {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bark); border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 56px;
+}
+.nav-name {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
+  color: #ffffff; letter-spacing: 0.01em; text-decoration: none;
+}
+.nav-name em { color: #c9aa71; font-style: italic; }
+.nav-back {
+  font-size: 11px; color: var(--sand2); letter-spacing: 0.07em; text-transform: uppercase;
+  font-family: var(--sans); text-decoration: none; display: flex; align-items: center; gap: 6px;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--terra-lt); }
+.nav-back::before { content: '←'; font-size: 13px; }
+
+.progress-bar {
+  position: fixed; top: 56px; left: 0; right: 0; height: 2px;
+  background: rgba(255,255,255,0.05); z-index: 99;
+}
+.progress-fill { height: 100%; background: linear-gradient(to right, var(--indigo-soft), var(--indigo-bright)); width: 0%; transition: width 0.1s linear; }
+
+/* HERO — slightly different feel from article 1, more intimate */
+.art-hero {
+  background: var(--bark); position: relative; overflow: hidden;
+  padding: 5rem 3rem 4.5rem;
+}
+.art-hero::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, var(--terra), transparent 60%);
+}
+.art-hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 2; }
+
+.issue-tag {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 2.25rem;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--sans); color: var(--sand2);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  padding: 5px 14px; border-radius: 2px;
+}
+.issue-tag span { color: var(--terra); }
+
+.art-headline {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.5vw, 3.7rem);
+  font-weight: 700; line-height: 1.06; letter-spacing: -0.02em;
+  color: #e8e7f5; margin-bottom: 1.5rem;
+}
+.art-headline em { color: #8b89d6; font-style: italic; }
+
+.art-deck {
+  font-family: var(--body); font-size: 1.1rem;
+  color: rgba(247,243,237,0.5); line-height: 1.8;
+  font-style: italic; max-width: 600px; margin-bottom: 2.5rem;
+}
+
+.art-meta {
+  display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07);
+  font-family: var(--sans); font-size: 11px; color: var(--sand2); letter-spacing: 0.06em; text-transform: uppercase;
+}
+.art-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-mid), var(--indigo-bright));
+  border: 1.5px solid #c9aa71;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-weight: 700; color: #fff; font-size: 14px; flex-shrink: 0;
+}
+.author-name { color: var(--cream2); font-weight: 500; font-size: 12px; }
+.author-role { color: var(--sand2); font-size: 10px; margin-top: 1px; }
+.meta-dot { color: rgba(255,255,255,0.12); }
+
+/* BODY */
+.art-body { max-width: 760px; margin: 0 auto; padding: 4.5rem 3rem; }
+
+.art-body p {
+  font-family: var(--body); font-size: 1.05rem; color: #1e1d3a;
+  line-height: 1.95; margin-bottom: 1.65rem;
+}
+.art-body p strong { color: var(--bark); font-weight: 600; }
+.art-body p em { color: var(--terra2); font-style: italic; }
+
+.art-body h2 {
+  font-family: var(--serif); font-size: 1.75rem; font-weight: 600;
+  color: #12112a; line-height: 1.2; margin: 3.75rem 0 1.25rem; letter-spacing: -0.01em;
+}
+
+/* CONFESSION BOX — new element, raw + vulnerable feel */
+.confession {
+  margin: 2.5rem 0; padding: 2rem 2.25rem 2rem 1.75rem;
+  background: var(--bark); border-radius: 6px;
+  border-left: 3px solid var(--terra); position: relative; overflow: hidden;
+}
+.confession .grain { opacity: 0.04; }
+.confession-label {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--terra); font-family: var(--sans); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.confession-label::before { content: '✦'; font-size: 8px; }
+.confession p {
+  color: rgba(247,243,237,0.72) !important;
+  font-size: 1rem !important; line-height: 1.9 !important;
+  font-family: var(--body) !important; font-style: italic; margin: 0 !important;
+}
+.confession p strong { color: var(--cream) !important; font-style: normal; }
+
+/* TIMELINE — the "what I thought vs what was happening" device */
+.two-col {
+  margin: 2.5rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  border: 1px solid var(--cream3); border-radius: 6px; overflow: hidden;
+}
+.tc-col { padding: 1.5rem; }
+.tc-col:first-child { background: #e8e5d8; border-right: 1px solid #d0ccbf; }
+.tc-col:last-child { background: #f7f4ee; }
+.tc-label {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: var(--sans); margin-bottom: 1rem;
+}
+.tc-label.mine { color: var(--terra); }
+.tc-label.theirs { color: var(--sand); }
+.tc-item {
+  display: flex; gap: 10px; align-items: flex-start; margin-bottom: 1rem;
+}
+.tc-item:last-child { margin-bottom: 0; }
+.tc-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px;
+}
+.tc-dot.mine { background: var(--terra); }
+.tc-dot.theirs { background: var(--sand2); }
+.tc-text { font-size: 13px; color: var(--bark2); font-family: var(--sans); line-height: 1.6; }
+
+/* PULLQUOTE */
+.pullquote {
+  margin: 3rem 0; padding: 2rem 2.25rem; border-left: 3px solid var(--terra);
+  background: #e8e5d8; border-radius: 0 4px 4px 0; position: relative;
+}
+.pullquote::before {
+  content: '\201C'; font-family: var(--serif); font-size: 5rem;
+  color: var(--terra); opacity: 0.18; position: absolute;
+  top: -0.5rem; left: 1.5rem; line-height: 1;
+}
+.pullquote p {
+  font-family: var(--serif); font-size: 1.25rem !important;
+  color: var(--bark) !important; font-style: italic; line-height: 1.65 !important;
+  margin: 0 !important; padding-left: 1.5rem;
+}
+.pullquote cite {
+  display: block; font-size: 11px; color: var(--sand); margin-top: 0.9rem;
+  font-family: var(--sans); font-style: normal; text-transform: uppercase;
+  letter-spacing: 0.07em; padding-left: 1.5rem;
+}
+
+/* SCENE */
+.scene {
+  margin: 2.5rem 0; padding: 2rem; background: var(--white);
+  border: 1px solid var(--cream3); border-radius: 6px;
+}
+.scene-label {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--terra); font-family: var(--sans); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.scene-label::before { content: ''; width: 18px; height: 1px; background: var(--terra); }
+.scene p { color: var(--bark3) !important; font-style: italic; margin: 0 !important; font-size: 0.97rem !important; }
+
+/* CHECKLIST */
+.checklist { margin: 1.5rem 0; list-style: none; }
+.checklist li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 0.75rem 0; border-bottom: 1px solid #d0ccbf;
+  font-size: 0.98rem; color: var(--bark2); font-family: var(--sans); line-height: 1.6;
+}
+.checklist li:last-child { border-bottom: none; }
+.cl-icon {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--terra-lt);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--terra); flex-shrink: 0; margin-top: 1px;
+  border: 1px solid rgba(196,98,45,0.2);
+}
+
+/* CALLOUT */
+.callout {
+  margin: 2.5rem 0; background: var(--bark); border-radius: 6px;
+  padding: 2rem 2.25rem; position: relative; overflow: hidden;
+}
+.callout .grain { opacity: 0.04; }
+.callout-label {
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); font-family: var(--sans); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.callout-label::before { content: '◆'; font-size: 7px; }
+.callout p {
+  color: rgba(247,243,237,0.75) !important; font-size: 0.95rem !important;
+  line-height: 1.85 !important; margin: 0 !important;
+  font-family: var(--sans) !important; font-weight: 300;
+}
+.callout p strong { color: var(--cream) !important; font-weight: 500 !important; }
+
+/* DIVIDER */
+.art-divider {
+  display: flex; align-items: center; gap: 1rem; margin: 3rem 0;
+}
+.art-divider::before, .art-divider::after { content: ''; flex: 1; height: 1px; background: var(--cream3); }
+.art-divider span { color: var(--terra); font-size: 10px; letter-spacing: 0.15em; }
+
+/* NEXT STRIP */
+.next-strip { background: var(--bark2); border-top: 1px solid rgba(255,255,255,0.07); padding: 3.5rem 3rem; }
+.next-inner { max-width: 760px; margin: 0 auto; }
+.next-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--terra); font-family: var(--sans); margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.next-label::before { content: ''; width: 22px; height: 1px; background: var(--terra); }
+.next-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.next-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px; padding: 1.5rem; transition: border-color 0.2s;
+  cursor: pointer; text-decoration: none; display: block;
+}
+.next-card:hover { border-color: var(--terra); }
+.nc-type { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terra); font-family: var(--sans); margin-bottom: 0.75rem; }
+.nc-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--cream2); line-height: 1.35; margin-bottom: 0.75rem; }
+.nc-pill {
+  display: inline-block; font-size: 9px; padding: 3px 10px; border-radius: 999px;
+  background: rgba(255,255,255,0.04); color: var(--sand2);
+  border: 1px solid rgba(255,255,255,0.07); font-family: var(--sans); margin-right: 5px;
+}
+.nc-coming {
+  font-size: 10px; color: var(--sand); font-family: var(--sans);
+  display: flex; align-items: center; gap: 6px; margin-top: 1rem;
+}
+.nc-coming::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: #c9aa71; animation: pulse 2s infinite; display: inline-block;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* CTA */
+.art-cta { background: var(--cream2); border-top: 1px solid var(--cream3); padding: 3.5rem 3rem; }
+.art-cta-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.cta-text h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--bark); margin-bottom: 0.4rem; }
+.cta-text h3 em { color: var(--terra); font-style: italic; }
+.cta-text p { font-size: 14px; color: var(--sand); font-family: var(--sans); }
+.cta-btn {
+  background: #5b58c2; color: #fff; font-family: var(--sans);
+  font-size: 12px; padding: 13px 26px; border-radius: 3px; text-decoration: none;
+  font-weight: 500; letter-spacing: 0.05em; white-space: nowrap; transition: background 0.2s;
+}
+.cta-btn:hover { background: #4a47a8; }
+
+footer {
+  background: var(--bark); padding: 1.75rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--sand); font-family: var(--sans);
+}
+footer a { color: var(--sand2); text-decoration: none; margin-left: 1.25rem; }
+footer a:hover { color: var(--terra-lt); }
+
+.fi { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fi.up { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 720px) {
+  nav { padding: 0 1.5rem; }
+  .art-hero { padding: 4rem 1.5rem 3.5rem; }
+  .art-body { padding: 3rem 1.5rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .tc-col:first-child { border-right: none; border-bottom: 1px solid var(--cream3); }
+  .next-strip, .art-cta { padding: 3rem 1.5rem; }
+  .next-grid { grid-template-columns: 1fr; }
+  .art-cta-inner { flex-direction: column; align-items: flex-start; }
+  footer { padding: 1.25rem 1.5rem; flex-direction: column; gap: 0.75rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+
+<nav>
+  <a href="simi_rebello_portfolio.html" class="nav-name"><em>Simi</em> Rebello</a>
+  <a href="simi_rebello_portfolio.html" class="nav-back">All articles</a>
+</nav>
+
+<div class="art-hero">
+  <div class="grain"></div>
+  <div class="art-hero-inner">
+    <div class="issue-tag"><span>№ 02</span> Enterprise Sales · 8 min read</div>
+    <h1 class="art-headline">
+      The meeting that<br>went great —<br>and then <em>nothing.</em>
+    </h1>
+    <p class="art-deck">
+      I've had this happen more times than I'd like to admit. A first meeting goes well. Really well. And then — nothing. Here's what I finally understood about why.
+    </p>
+    <div class="art-meta">
+      <div class="art-author">
+        <div class="author-avatar">SR</div>
+        <div>
+          <div class="author-name">Simi Rebello</div>
+          <div class="author-role">Senior Solutions & Business Growth Manager</div>
+        </div>
+      </div>
+      <span class="meta-dot">·</span>
+      <span>May 2026</span>
+      <span class="meta-dot">·</span>
+      <span>8 min read</span>
+    </div>
+  </div>
+</div>
+
+<div class="art-body">
+
+  <p class="fi">
+    I've had this happen more times than I'd like to admit.
+  </p>
+
+  <p class="fi">
+    A first meeting goes well. Really well. Good questions from their side, genuine back-and-forth, one of those rare hours where you leave thinking — <em>that's what this is supposed to feel like.</em> You send a tight follow-up that evening. And then you wait.
+  </p>
+
+  <p class="fi">
+    Nothing. Not a reply, not a "we'll be in touch," not even a polite no. Just silence where a deal used to be.
+  </p>
+
+  <p class="fi">
+    I told myself it was timing. Budget. An internal reshuffle. All of which were sometimes true. But the pattern kept repeating, and eventually I had to stop blaming circumstance and start asking what I was actually doing wrong.
+  </p>
+
+  <div class="art-divider fi"><span>◆</span></div>
+
+  <h2 class="fi">It took me four more times for the pattern to land</h2>
+
+  <p class="fi">
+    Because it happened again. And again. Great energy in the room, polite silence after. I started calling it the "great meeting curse" — like I had some talent for creating a wonderful hour that led absolutely nowhere.
+  </p>
+
+  <p class="fi">
+    Eventually I started asking people I trusted. Other salespeople, a few senior folks who'd been doing this longer than me. And one of them said something that I've thought about almost every week since.
+  </p>
+
+  <div class="confession fi">
+    <div class="grain"></div>
+    <div class="confession-label">What someone finally said to me</div>
+    <p>"Simi, a good meeting isn't a milestone. It's just a <strong>conversation that didn't hurt you yet.</strong> The real question is whether you gave them a reason to take the next step — or just a nice memory of you."</p>
+  </div>
+
+  <p class="fi">
+    That landed hard. Because I realised what I'd been doing in every one of those meetings.
+  </p>
+
+  <p class="fi">
+    I'd been <em>performing.</em> Listening well, yes. Responding smartly, yes. Building rapport, absolutely. But performing — oriented toward being liked, being seen as competent, leaving a good impression. Not oriented toward <strong>moving something forward.</strong>
+  </p>
+
+  <p class="fi">
+    And those are not the same thing.
+  </p>
+
+  <h2 class="fi">What I thought I was doing versus what was actually happening</h2>
+
+  <p class="fi">
+    Here's the honest version of what was going on in those meetings — my internal experience versus what the buyer was probably experiencing.
+  </p>
+
+  <div class="two-col fi">
+    <div class="tc-col">
+      <div class="tc-label mine">What I thought I was doing</div>
+      <div class="tc-item"><div class="tc-dot mine"></div><div class="tc-text">Building rapport and trust by listening deeply</div></div>
+      <div class="tc-item"><div class="tc-dot mine"></div><div class="tc-text">Showing product value through smart, relevant examples</div></div>
+      <div class="tc-item"><div class="tc-dot mine"></div><div class="tc-text">Leaving the door open by not being pushy</div></div>
+      <div class="tc-item"><div class="tc-dot mine"></div><div class="tc-text">Ending on a high note so they'd remember me positively</div></div>
+    </div>
+    <div class="tc-col">
+      <div class="tc-label theirs">What the buyer probably experienced</div>
+      <div class="tc-item"><div class="tc-dot theirs"></div><div class="tc-text">A pleasant conversation with no clear outcome defined</div></div>
+      <div class="tc-item"><div class="tc-dot theirs"></div><div class="tc-text">Interesting, but no specific problem was diagnosed or named</div></div>
+      <div class="tc-item"><div class="tc-dot theirs"></div><div class="tc-text">No reason to do anything next — no urgency, no stakes</div></div>
+      <div class="tc-item"><div class="tc-dot theirs"></div><div class="tc-text">A meeting they'd have to explain to their boss without a concrete ask</div></div>
+    </div>
+  </div>
+
+  <p class="fi">
+    See the gap? I was optimising for the vibe. They needed a reason. Not a pushy "so shall we set up a demo?" reason — but a genuine, specific, <em>this is what happens next and why it matters</em> reason.
+  </p>
+
+  <p class="fi">
+    And I never gave them one.
+  </p>
+
+  <div class="pullquote fi">
+    <p>A buyer who leaves a great meeting with no clear next step doesn't think "I should follow up on that." They think "that was nice" — and then go back to the forty other things on their plate.</p>
+    <cite>— What ghosting usually means, when you're honest about it</cite>
+  </div>
+
+  <h2 class="fi">The real job of a discovery call</h2>
+
+  <p class="fi">
+    I used to think discovery was about understanding the client — their problems, their setup, their goals. And yes, it's that. But that's only half of it.
+  </p>
+
+  <p class="fi">
+    The other half — the half I was missing — is creating <strong>shared clarity about what happens next and why it matters to them right now.</strong>
+  </p>
+
+  <p class="fi">
+    Not urgency in the manufactured, "this offer expires Friday" sense. Real urgency — the kind that comes from helping someone articulate a problem they hadn't fully named, and then making it obvious that leaving it unaddressed has a cost.
+  </p>
+
+  <div class="callout fi">
+    <div class="grain"></div>
+    <div class="callout-label">The thing I now do in every discovery call</div>
+    <p>
+      Before I wrap up, I ask one question that I used to be too polite to ask: <strong>"If this problem doesn't get solved in the next six months, what does that cost you?"</strong> Not in rupees — in whatever currency matters to them. Headcount. Hours. A failed product launch. A conversation they don't want to have with their board. When they answer that question out loud, the next step writes itself.
+    </p>
+  </div>
+
+  <h2 class="fi">Three things I changed after those lost deals</h2>
+
+  <p class="fi">
+    None of these are radical. None of them require being pushy or salesy. They just require being intentional in a place where I used to coast on good energy.
+  </p>
+
+  <ul class="checklist fi">
+    <li>
+      <div class="cl-icon">1</div>
+      <div><strong>Name the problem back to them, explicitly.</strong> Before we talk solutions, I now spend a minute summarising what I heard as their actual problem — in my words. "So what I'm hearing is… is that right?" It sounds simple. It's remarkably rare. And when they say "yes, exactly" — something shifts. You've just become the person who understood them, not just heard them.</div>
+    </li>
+    <li>
+      <div class="cl-icon">2</div>
+      <div><strong>Agree on a specific next step before you end the call.</strong> Not "I'll send you something." Not "let's find time again soon." Something concrete — "I'll send you a two-page summary of how we solved this for a team in a similar position, and you tell me if it's relevant." That email now has a reason to exist. They're expecting it. They'll open it.</div>
+    </li>
+    <li>
+      <div class="cl-icon">3</div>
+      <div><strong>Ask who else cares about this problem.</strong> Not to collect contacts. To understand if the person you're speaking to can actually move things forward, or if there's someone else who needs to be in the room. "Is this a problem that sits with your team, or is there a budget conversation that needs to happen upstream?" That question has saved me months of chasing the wrong person.</div>
+    </li>
+  </ul>
+
+  <div class="art-divider fi"><span>◆</span></div>
+
+  <h2 class="fi">About that VP who never replied</h2>
+
+  <p class="fi">
+    I ran into them at an industry event about eight months later. We spoke briefly. They were warm, remembered the meeting, said something kind about it.
+  </p>
+
+  <p class="fi">
+    And then they said, almost as an aside: "You know, we were actually in the middle of a big internal restructure when we met. I just didn't know how to take that conversation anywhere at the time."
+  </p>
+
+  <p class="fi">
+    Which told me everything. The timing had been bad — genuinely bad, nothing I could have controlled. But I'd also never asked the question that might have surfaced it. "Is now actually the right time for this, or would it be more useful to pick this up in a few months?" That question would have got me an honest answer. Instead I chased silence for weeks.
+  </p>
+
+  <div class="scene fi">
+    <div class="scene-label">What I'd do differently now</div>
+    <p>Near the end of that original meeting, I'd ask: "Given everything on your plate right now — is this the kind of problem that needs solving this quarter, or is there something that needs to shift internally before it becomes a priority?" That one question either surfaces the real obstacle, or it locks in the urgency. Either way, you know where you actually stand. No more guessing. No more chasing ghosts.</p>
+  </div>
+
+  <p class="fi">
+    That's the thing nobody tells you about sales early on: <strong>a no you can hear is infinitely more useful than a yes that disappears.</strong>
+  </p>
+
+  <p class="fi">
+    I'd rather know in the meeting that the timing is wrong than spend three weeks crafting emails into a void. Give me the honest conversation over the polite non-reply, every single time.
+  </p>
+
+  <div class="art-divider fi"><span>◆</span></div>
+
+  <p class="fi">
+    Great meetings are a wonderful thing. I still love them. There is nothing like an hour where two people are genuinely thinking together about a real problem.
+  </p>
+
+  <p class="fi">
+    But I've learned to hold that energy lightly now — to enjoy it without mistaking it for progress. Progress is a named problem, a specific next step, and someone who knows what they're supposed to do tomorrow morning.
+  </p>
+
+  <p class="fi">
+    Everything else is just a nice conversation.
+  </p>
+
+  <p class="fi" style="color: var(--sand); font-size: 0.93rem; font-style: italic;">
+    Next time you come out of a great meeting — before you write the follow-up, ask yourself: did we agree on something specific, or did I just leave them with a good feeling? The answer will tell you a lot.
+  </p>
+
+</div>
+
+<!-- NEXT UP -->
+<div class="next-strip" style="display:none">
+  <div class="next-inner">
+    <div class="next-label fi">Coming up next</div>
+    <div class="next-grid">
+      <a href="#" class="next-card fi">
+        <div class="nc-type">Article · Next issue</div>
+        <div class="nc-title">The POC trap — why you're doing free work and calling it sales</div>
+        <div>
+          <span class="nc-pill">#poc</span>
+          <span class="nc-pill">#pre-sales</span>
+        </div>
+        <div class="nc-coming">Publishing soon</div>
+      </a>
+      <a href="article_why_your_first_email_lost_the_deal.html" class="next-card fi">
+        <div class="nc-type">Article · Issue 01</div>
+        <div class="nc-title">Why your first email already lost you the deal</div>
+        <div>
+          <span class="nc-pill">#outreach</span>
+          <span class="nc-pill">#cold-email</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="art-cta">
+  <div class="art-cta-inner">
+    <div class="cta-text">
+      <h3>Want to talk <em>enterprise growth?</em></h3>
+      <p>Senior CS, pre-sales, and business growth conversations. Always open.</p>
+    </div>
+    <a href="mailto:srebello91@gmail.com" class="cta-btn">Get in touch →</a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Simi Rebello &nbsp;·&nbsp; Mumbai, India</span>
+  <div>
+    <a href="mailto:srebello91@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/simi-rebello" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
+    document.getElementById('prog').style.width = (scrolled * 100) + '%';
+  });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) setTimeout(() => e.target.classList.add('up'), i * 60);
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
