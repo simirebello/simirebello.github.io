@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simi Rebello — Enterprise SaaS & Business Growth</title>
-<meta name="description" content="Customer Solutions & Business Growth. 5+ years closing enterprise deals across India's top OTT and broadcast brands. Articles and conversations on what actually works.">
+<meta name="description" content="Senior Solutions & Business Growth Manager. 5+ years closing enterprise deals across India's top OTT and broadcast brands. Articles and conversations on what actually works.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -452,9 +452,235 @@ footer {
 footer a { color: var(--muted2); text-decoration: none; margin-left: 1.25rem; }
 footer a:hover { color: var(--indigo-lt); }
 
-/* ── SCROLL FADE IN ── */
-.fi { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
-.fi.up { opacity: 1; transform: translateY(0); }
+/* ══════════════════════════════
+   INTERACTIVE LAYER
+══════════════════════════════ */
+
+/* 1. CUSTOM CURSOR */
+* { cursor: none !important; }
+#cursor {
+  position: fixed; pointer-events: none; z-index: 9999;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--lavender);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed; pointer-events: none; z-index: 9998;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid rgba(136,120,204,0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1),
+              height 0.4s cubic-bezier(0.16,1,0.3,1),
+              border-color 0.3s, opacity 0.3s;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 20px; height: 20px; background: #fff; }
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 60px; height: 60px; border-color: var(--lavender); }
+body:has(.card-article:hover) #cursor { width: 56px; height: 56px; background: var(--indigo); opacity: 0.7; }
+body:has(.card-article:hover) #cursor-ring { opacity: 0; }
+
+/* 2. HERO PARTICLES CANVAS */
+#hero-canvas {
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none; opacity: 0.5;
+}
+
+/* 3. MAGNETIC BUTTON */
+.btn-magnetic {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* 4. CARD HOVER — glow + lift + reveal */
+.card-article {
+  transition: border-color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.4s ease !important;
+  position: relative;
+}
+.card-article::after {
+  content: 'Read →';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
+  color: #fff; letter-spacing: 0.05em;
+  background: rgba(74,58,170,0.92);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  border-radius: 6px;
+}
+.card-article:hover { transform: translateY(-8px) scale(1.01) !important; box-shadow: 0 24px 60px rgba(74,58,170,0.25) !important; }
+.card-article:hover::after { opacity: 1; }
+
+/* 5. TICKER glow on hover */
+.ticker-item {
+  transition: color 0.2s, background 0.2s;
+  cursor: none;
+}
+.ticker-item:hover { color: var(--lavender) !important; background: rgba(136,120,204,0.08); }
+
+/* 6. STAT NUMBER HOVER */
+.hstat { cursor: none; transition: transform 0.3s ease; }
+.hstat:hover { transform: scale(1.12); }
+.hstat:hover .hstat-num { color: var(--sand); }
+
+/* 7. CONTACT LINKS */
+.clink {
+  transition: border-color 0.25s, transform 0.35s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.35s ease !important;
+}
+.clink:hover {
+  transform: translateX(8px) !important;
+  box-shadow: -4px 0 0 var(--indigo), 0 8px 30px rgba(74,58,170,0.15) !important;
+}
+
+/* 8. FACT ITEMS */
+.fact {
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s;
+  cursor: none;
+}
+.fact:hover { transform: translateX(8px); border-color: var(--lavender); }
+.fact:hover .fact-val { color: var(--sand) !important; }
+
+/* 9. NAV CTA pulse */
+.nav-cta {
+  position: relative; overflow: hidden;
+}
+.nav-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.nav-cta:hover::before { transform: translateX(100%); }
+
+/* 10. SCROLL PROGRESS BAR */
+#scroll-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(to right, var(--indigo), var(--lavender));
+  z-index: 9999; width: 0%; transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--lavender);
+}
+
+/* ══════════════════════════════
+   A — CINEMATIC HERO SLIDE-UP
+══════════════════════════════ */
+@keyframes slideUpHero {
+  0%   { opacity: 0; transform: translateY(70px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes ruleExpand {
+  0%   { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes fadeInUp {
+  0%   { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.hero-overline { animation: fadeInUp   0.6s cubic-bezier(0.16,1,0.3,1) 0.05s both; }
+.hero-name     { animation: slideUpHero 1s  cubic-bezier(0.16,1,0.3,1) 0.15s both; }
+.hero-rule     { animation: ruleExpand  1s  cubic-bezier(0.16,1,0.3,1) 0.55s both; transform-origin: left; }
+.hero-desc     { animation: fadeInUp   0.8s cubic-bezier(0.16,1,0.3,1) 0.75s both; }
+.hero-stats    { animation: fadeInUp   0.8s cubic-bezier(0.16,1,0.3,1) 0.95s both; }
+.ticker-wrap   { animation: fadeInUp   0.6s ease 1.15s both; }
+
+/* ══════════════════════════════
+   B — TYPEWRITER
+══════════════════════════════ */
+#tw-cursor {
+  display: inline-block; width: 3px; height: 0.8em;
+  background: var(--lavender); vertical-align: middle;
+  margin-left: 3px; border-radius: 1px;
+  animation: twBlink 0.85s step-end infinite;
+}
+@keyframes twBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ══════════════════════════════
+   C — STAGGERED SCROLL REVEALS
+══════════════════════════════ */
+.fi       { opacity:0; transform:translateY(30px);   transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+.fi-left  { opacity:0; transform:translateX(-36px);  transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+.fi-right { opacity:0; transform:translateX(36px);   transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+.fi-scale { opacity:0; transform:scale(0.92);        transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1); }
+.fi-blur  { opacity:0; filter:blur(6px); transform:translateY(18px); transition:opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease; }
+.fi.up,.fi-left.up,.fi-right.up,.fi-scale.up { opacity:1; transform:none; }
+.fi-blur.up { opacity:1; transform:none; filter:none; }
+
+/* stagger delays for child groups */
+.stagger-children > *:nth-child(1) { transition-delay:0.04s }
+.stagger-children > *:nth-child(2) { transition-delay:0.12s }
+.stagger-children > *:nth-child(3) { transition-delay:0.20s }
+.stagger-children > *:nth-child(4) { transition-delay:0.28s }
+.stagger-children > *:nth-child(5) { transition-delay:0.36s }
+.stagger-children > *:nth-child(6) { transition-delay:0.44s }
+
+/* ══════════════════════════════
+   D — NUMBER COUNTER (JS driven)
+══════════════════════════════ */
+.hstat-num { display:inline-block; transition: color 0.3s; }
+.hstat { cursor:none; transition:transform 0.3s ease; }
+.hstat:hover { transform:scale(1.1); }
+.hstat:hover .hstat-num { color:var(--sand); }
+
+/* ══════════════════════════════
+   E — TEXT WIPE REVEAL
+══════════════════════════════ */
+.wipe {
+  display:inline-block; position:relative; overflow:hidden;
+}
+.wipe::after {
+  content:''; position:absolute; inset:0;
+  background:var(--sand); transform:translateX(0);
+  transition:transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.wipe.wiped::after { transform:translateX(101%); }
+/* dark bg version */
+.wipe-dark::after { background:var(--ink); }
+/* section label version */
+.wipe-cream::after { background:var(--sand2); }
+
+/* ══════════════════════════════
+   INTERACTIVE EXTRAS
+══════════════════════════════ */
+/* Magnetic nav CTA shimmer */
+.nav-cta { position:relative; overflow:hidden; }
+.nav-cta::before {
+  content:''; position:absolute; inset:0;
+  background:rgba(255,255,255,0.2);
+  transform:translateX(-100%); transition:transform 0.4s ease;
+}
+.nav-cta:hover::before { transform:translateX(100%); }
+
+/* Pill hover lift */
+.ipill { transition:transform 0.25s ease, box-shadow 0.25s ease; cursor:none; }
+.ipill:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(74,58,170,0.2); }
+.ipill.hot:hover { box-shadow:0 6px 20px rgba(74,58,170,0.4); }
+
+/* Fact hover slide */
+.fact { transition:transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s; cursor:none; }
+.fact:hover { transform:translateX(8px); border-color:var(--lavender); }
+.fact:hover .fact-val { color:var(--sand) !important; }
+
+/* Contact link hover */
+.clink { transition:border-color 0.25s, transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease !important; }
+.clink:hover { transform:translateX(8px) !important; box-shadow:-4px 0 0 var(--indigo), 0 8px 30px rgba(74,58,170,0.15) !important; }
+
+/* Hero name em — no underline */
+.hero-name em { position:relative; display:inline-block; }
+
+/* Availability ping */
+.avail-val.open::before {
+  box-shadow:0 0 0 0 rgba(74,58,170,0.4);
+  animation:ping 1.5s cubic-bezier(0,0,0.2,1) infinite !important;
+}
+@keyframes ping {
+  0%  { box-shadow:0 0 0 0 rgba(74,58,170,0.5); }
+  70% { box-shadow:0 0 0 8px rgba(74,58,170,0); }
+  100%{ box-shadow:0 0 0 0 rgba(74,58,170,0); }
+}
+
 
 /* ── RESPONSIVE ── */
 @media (max-width: 760px) {
@@ -480,6 +706,9 @@ footer a:hover { color: var(--indigo-lt); }
 </style>
 </head>
 <body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="scroll-bar"></div>
 
 <!-- ── NAV ── -->
 <nav>
@@ -492,11 +721,12 @@ footer a:hover { color: var(--indigo-lt); }
 
 <!-- ── HERO ── -->
 <div class="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="grain"></div>
   <div class="hero-inner">
-    <div class="hero-overline">Customer Solutions &amp; Business Growth</div>
+    <div class="hero-overline">Senior Solutions &amp; Business Growth Manager</div>
     <h1 class="hero-name">
-      Simi<br><em>Rebello.</em>
+      Simi<br><em id="hero-em">Rebello.</em>
     </h1>
     <div class="hero-rule"></div>
     <div class="hero-bottom">
@@ -555,12 +785,12 @@ footer a:hover { color: var(--indigo-lt); }
 <!-- ── INTRO STRIP ── -->
 <div class="intro-strip">
   <div class="intro-inner">
-    <p class="intro-text fi">
+    <p class="intro-text fi-blur">
       "The best deals don't come from pitch decks —<br>
       they come from <strong>genuine understanding.</strong><br>
       Here's everything I've learned closing them."
     </p>
-    <div class="intro-pills fi">
+    <div class="intro-pills fi d2">
       <span class="ipill hot">#enterprise-sales</span>
       <span class="ipill hot">#customer-success</span>
       <span class="ipill">#saas-growth</span>
@@ -574,7 +804,7 @@ footer a:hover { color: var(--indigo-lt); }
 <!-- ── THE DESK ── -->
 <div class="desk">
   <div class="desk-inner">
-    <div class="section-label fi">
+    <div class="section-label fi-blur">
       <div class="sl-line"></div>
       <div class="sl-text">The Practitioner's Desk — Articles &amp; Conversations</div>
       <div class="sl-line"></div>
@@ -582,9 +812,9 @@ footer a:hover { color: var(--indigo-lt); }
     <div class="desk-grid">
 
       <!-- ARTICLE 1 — LIVE -->
-      <a href="https://simirebello.github.io/great_meetings.html" class="card-article fi" target="_blank" style="grid-column:1/-1">
+      <a href="https://simirebello.github.io/great_meetings.html" class="card-article fi-scale" target="_blank" style="grid-column:1/-1">
         <div class="card-type"><div class="dot"></div>Article · Issue №01 · Live now</div>
-        <div class="card-title" style="font-size:1.5rem">The meeting that went great — and then nothing.</div>
+        <div class="card-title" style="font-size:1.5rem"><span class="wipe">The meeting that went great — and then nothing.</span></div>
         <div class="card-pull">"Everyone talks about closing. Nobody talks about what you're doing in the meeting that makes closing impossible. This is that."</div>
         <div class="card-tags">
           <span class="ctag">#enterprise-sales</span>
@@ -608,25 +838,25 @@ footer a:hover { color: var(--indigo-lt); }
 <div class="about-strip">
   <div class="grain"></div>
   <div class="about-inner">
-    <div class="about-quote fi">
-      "I believe the best business growth comes from genuinely understanding what a client needs —
-      then becoming <strong>the person they call first.</strong>"
-      <cite>— Simi Rebello &nbsp;·&nbsp; Customer Solutions &amp; Business Growth, Tessact.AI</cite>
+    <div class="about-quote fi-left">
+      <span class="wipe wipe-dark">"I believe the best business growth comes from genuinely understanding what a client needs —
+      then becoming <strong>the person they call first.</strong>"</span>
+      <cite>— Simi Rebello &nbsp;·&nbsp; Senior Solutions &amp; Business Growth Manager, Tessact.AI</cite>
     </div>
-    <div class="about-facts fi">
-      <div class="fact">
+    <div class="about-facts fi-right stagger-children">
+      <div class="fact fi">
         <div class="fact-val" style="font-size:0.95rem;font-weight:600;color:var(--lavender);line-height:1.3">C-suite first.</div>
         <div class="fact-label">I work at the level where decisions actually get made — not just the people who pass them along.</div>
       </div>
-      <div class="fact">
+      <div class="fact fi">
         <div class="fact-val" style="font-size:0.95rem;font-weight:600;color:var(--lavender);line-height:1.3">No ghosting after POC.</div>
         <div class="fact-label">I define success before the trial starts — so clients know exactly what a yes looks like.</div>
       </div>
-      <div class="fact">
+      <div class="fact fi d3">
         <div class="fact-val" style="font-size:0.95rem;font-weight:600;color:var(--lavender);line-height:1.3">India's biggest OTT brands.</div>
         <div class="fact-label">Zee, Viacom18, JioHotstar, Sony Pictures, Prime Video — and clients across Singapore and France.</div>
       </div>
-      <div class="fact">
+      <div class="fact fi d4">
         <div class="fact-val" style="font-size:0.95rem;font-weight:600;color:var(--lavender);line-height:1.3">Feedback that ships.</div>
         <div class="fact-label">I don't just collect client input — I translate it into decisions that engineering teams actually act on.</div>
       </div>
@@ -637,10 +867,10 @@ footer a:hover { color: var(--indigo-lt); }
 <!-- ── CONTACT ── -->
 <div class="contact-sec">
   <div class="contact-inner">
-    <div class="fi">
+    <div class="fi-left">
       <div class="contact-heading">Let's build<br>something <em>together</em></div>
       <p class="contact-sub">
-        Open to <strong>Customer solutionist, pre-sales, and business growth roles</strong> in AI SaaS,
+        Open to <strong>senior CS, pre-sales, and business growth roles</strong> in AI SaaS,
         MediaTech, and enterprise software. Or just want to talk shop about closing enterprise deals?
         I'm always up for a good conversation.
       </p>
@@ -654,7 +884,7 @@ footer a:hover { color: var(--indigo-lt); }
           <div><div class="clink-lbl">Phone</div><div class="clink-val">+91 89766 77764</div></div>
         </a>
         <!-- UPDATE: Replace simi-rebello with your exact LinkedIn handle -->
-        <a href="https://www.linkedin.com/in/simi-rebello-65a423208/" target="_blank" class="clink">
+        <a href="https://linkedin.com/in/simi-rebello" target="_blank" class="clink">
           <div class="clink-icon" style="font-weight:800;font-size:12px;font-family:sans-serif">in</div>
           <div><div class="clink-lbl">LinkedIn</div><div class="clink-val">linkedin.com/in/simi-rebello</div></div>
         </a>
@@ -664,7 +894,7 @@ footer a:hover { color: var(--indigo-lt); }
         </div>
       </div>
     </div>
-    <div class="fi">
+    <div class="fi-right">
       <div class="avail-card">
         <div class="avail-title">Availability &amp; Interests</div>
         <div class="avail-row"><span class="avail-key">Status</span><span class="avail-val open">Open to work</span></div>
@@ -689,17 +919,294 @@ footer a:hover { color: var(--indigo-lt); }
   <span>© 2026 Simi Rebello &nbsp;·&nbsp; Mumbai, India</span>
   <div>
     <a href="mailto:srebello91@gmail.com">Email</a>
-    <a href="https://www.linkedin.com/in/simi-rebello-65a423208/" target="_blank">LinkedIn</a>
+    <a href="https://linkedin.com/in/simi-rebello" target="_blank">LinkedIn</a>
   </div>
 </footer>
 
 <script>
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) setTimeout(() => e.target.classList.add('up'), i * 80);
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+// ═══════════════════════════════════
+// 1. CUSTOM CURSOR
+// ═══════════════════════════════════
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+// ring follows with lag
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+document.addEventListener('mousedown', () => {
+  cursor.style.transform = 'translate(-50%,-50%) scale(0.7)';
+});
+document.addEventListener('mouseup', () => {
+  cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+});
+
+// ═══════════════════════════════════
+// 2. SCROLL PROGRESS BAR
+// ═══════════════════════════════════
+const scrollBar = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = pct + '%';
+}, { passive: true });
+
+// ═══════════════════════════════════
+// 3. HERO PARTICLE CANVAS
+// ═══════════════════════════════════
+const canvas = document.getElementById('hero-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resizeCanvas() {
+  const hero = canvas.parentElement;
+  W = canvas.width  = hero.offsetWidth;
+  H = canvas.height = hero.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x  = Math.random() * W;
+    this.y  = init ? Math.random() * H : H + 10;
+    this.r  = Math.random() * 1.5 + 0.3;
+    this.sp = Math.random() * 0.4 + 0.1;
+    this.op = Math.random() * 0.5 + 0.1;
+    this.dx = (Math.random() - 0.5) * 0.2;
+  }
+  update() {
+    this.y -= this.sp;
+    this.x += this.dx;
+    if (this.y < -10) this.reset(false);
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(136,120,204,${this.op})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+// mouse repel
+let hx = -999, hy = -999;
+canvas.parentElement.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  hx = e.clientX - rect.left;
+  hy = e.clientY - rect.top;
+});
+
+(function animParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    // repel from mouse
+    const dist = Math.hypot(p.x - hx, p.y - hy);
+    if (dist < 80) {
+      p.x += (p.x - hx) / dist * 1.5;
+      p.y += (p.y - hy) / dist * 1.5;
+    }
+    p.update(); p.draw();
+  });
+  requestAnimationFrame(animParticles);
+})();
+
+// ═══════════════════════════════════
+// 4. SCROLL REVEAL
+// ═══════════════════════════════════
+const revObs = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('up'), i * 90);
+      revObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fi,.fi-left,.fi-right,.fi-scale,.fi-blur')
+  .forEach(el => revObs.observe(el));
+
+// hero em — underline removed
+
+// ═══════════════════════════════════
+// 6. MAGNETIC BUTTONS
+// ═══════════════════════════════════
+document.querySelectorAll('.nav-cta, .btn-fill, .btn-line').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r  = btn.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top  + r.height / 2;
+    const dx = (e.clientX - cx) * 0.25;
+    const dy = (e.clientY - cy) * 0.25;
+    btn.style.transform = `translate(${dx}px, ${dy}px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// ═══════════════════════════════════
+// 7. TILT on article card
+// ═══════════════════════════════════
+document.querySelectorAll('.card-article').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r   = card.getBoundingClientRect();
+    const cx  = r.left + r.width  / 2;
+    const cy  = r.top  + r.height / 2;
+    const dx  = (e.clientX - cx) / (r.width  / 2);
+    const dy  = (e.clientY - cy) / (r.height / 2);
+    card.style.transform = `translateY(-8px) rotateY(${dx * 4}deg) rotateX(${-dy * 4}deg) scale(1.01)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.3s';
+  });
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'transform 0.1s ease, box-shadow 0.4s ease, border-color 0.3s';
+  });
+});
+
+// ═══════════════════════════════════
+// 8. STAT COUNTERS (D)
+// ═══════════════════════════════════
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el  = entry.target.querySelector('.hstat-num');
+    if (!el)  return;
+    const raw = el.getAttribute('data-val') || el.textContent.trim();
+    el.setAttribute('data-val', raw);
+    const m   = raw.match(/^([₹]?)(\d+)([%+L]*)$/);
+    if (!m)   return;
+    const [, pre, numStr, suf] = m;
+    const num = parseInt(numStr);
+    const dur = 1800;
+    const t0  = performance.now();
+    const tick = now => {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 4);
+      el.textContent = pre + Math.floor(e * num) + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    statObs.unobserve(entry.target);
+  });
+}, { threshold: 0.7 });
+document.querySelectorAll('.hstat').forEach(el => statObs.observe(el));
+
+// ═══════════════════════════════════
+// 9. TICKER pause on hover
+// ═══════════════════════════════════
+const ticker = document.querySelector('.ticker');
+document.querySelector('.ticker-wrap')?.addEventListener('mouseenter', () => ticker.style.animationPlayState = 'paused');
+document.querySelector('.ticker-wrap')?.addEventListener('mouseleave', () => ticker.style.animationPlayState = 'running');
+
+// ═══════════════════════════════════
+// 10. INTRO PILLS stagger delay
+// ═══════════════════════════════════
+document.querySelectorAll('.ipill').forEach((pill, i) => {
+  pill.style.transitionDelay = (i * 0.04) + 's';
+});
+
+// ═══════════════════════════════════
+// B. TYPEWRITER on hero desc
+// ═══════════════════════════════════
+const heroDesc = document.querySelector('.hero-desc');
+if (heroDesc) {
+  const lines = [
+    "I don't just talk about enterprise growth —",
+    "I've lived it.",
+    "Closing ₹50L+ deals, onboarding 500+ users,",
+    "managing C-suite relationships at India's biggest OTT brands.",
+    "This is where I share what actually works."
+  ];
+  // inject cursor
+  const twCursor = document.createElement('span');
+  twCursor.id = 'tw-cursor';
+  heroDesc.innerHTML = '';
+  heroDesc.appendChild(twCursor);
+
+  let lineIdx = 0, charIdx = 0;
+  let currentText = '';
+  let isDeleting = false;
+  let isPaused = false;
+
+  function typeLoop() {
+    if (isPaused) { setTimeout(typeLoop, 1200); isPaused = false; return; }
+
+    const fullLine = lines[lineIdx];
+    if (!isDeleting) {
+      currentText = fullLine.slice(0, ++charIdx);
+    } else {
+      currentText = fullLine.slice(0, --charIdx);
+    }
+
+    heroDesc.childNodes[0]?.remove();
+    const textNode = document.createTextNode(currentText);
+    heroDesc.insertBefore(textNode, twCursor);
+
+    let speed = isDeleting ? 28 : 48;
+
+    if (!isDeleting && charIdx === fullLine.length) {
+      // finished typing this line
+      if (lineIdx === lines.length - 1) {
+        // last line — stop here
+        heroDesc.removeChild(twCursor);
+        return;
+      }
+      isPaused = true; isDeleting = true;
+    } else if (isDeleting && charIdx === 0) {
+      isDeleting = false;
+      lineIdx = (lineIdx + 1) % lines.length;
+      isPaused = true;
+    }
+    setTimeout(typeLoop, speed);
+  }
+  // start after hero animation settles
+  setTimeout(typeLoop, 1400);
+}
+
+// ═══════════════════════════════════
+// E. WIPE REVEAL on scroll
+// ═══════════════════════════════════
+const wipeObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('wiped'), 100);
+      wipeObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.wipe').forEach(el => wipeObs.observe(el));
+
+// ═══════════════════════════════════
+// C. STAGGER SCROLL for stagger-children groups
+// ═══════════════════════════════════
+const staggerObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const children = entry.target.querySelectorAll('.fi, .fi-left, .fi-right, .fi-scale, .fi-blur');
+      children.forEach((child, i) => {
+        setTimeout(() => child.classList.add('up'), i * 100);
+      });
+      staggerObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.stagger-children').forEach(el => staggerObs.observe(el));
+
 </script>
 
 </body>
